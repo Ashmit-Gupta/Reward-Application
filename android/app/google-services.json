@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712367084379",
+    "project_id": "reward-app-ae505",
+    "storage_bucket": "reward-app-ae505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712367084379:android:c4f7c3db1c5181136ac07e",
+        "android_client_info": {
+          "package_name": "com.satvadesignstudio.reward_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8tabhxtD6a3ojPx9QD2oGrmK96UNS35w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
