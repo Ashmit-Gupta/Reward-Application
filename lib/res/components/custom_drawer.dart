@@ -43,13 +43,22 @@ class SideBar extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.dashboard_customize_outlined),
                 title: Text("DashBoard"),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, RoutesName.home);
+                },
               ),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),
                 onTap: () async {
                   await authViewModel.logOut();
+                  Navigator.pushReplacementNamed(context, RoutesName.login);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.wallet),
+                title: Text("wallet"),
+                onTap: () async {
                   Navigator.pushReplacementNamed(context, RoutesName.login);
                 },
               ),

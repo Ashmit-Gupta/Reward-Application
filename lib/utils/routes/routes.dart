@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/views/login_view.dart';
 
-import '../../views/home_view.dart';
+import '../../views/dashboard_view.dart';
 import '../../views/signup_view.dart';
 import '../../views/splash_screen.dart';
+import '../../views/wallet_view.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,6 +27,10 @@ class Routes {
       case RoutesName.login:
         return MaterialPageRoute(
             builder: (BuildContext context) => LoginScreen());
+
+      case RoutesName.wallet:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => WalletScreen());
 
       default:
         return MaterialPageRoute(

@@ -58,6 +58,7 @@
 // }
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 import 'package:reward_app/data/app_exceptions/auth_exception_handler.dart';
 
 import '../app_exceptions/auth_error_msg.dart';
@@ -65,6 +66,7 @@ import '../app_exceptions/auth_result_status.dart';
 import '../response/response.dart';
 import 'base_firebase_services.dart';
 
+@injectable
 class FirebaseServices extends BaseFirebaseServices {
   final FirebaseAuth _auth; // Injected FirebaseAuth instance
 

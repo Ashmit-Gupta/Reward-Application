@@ -1,7 +1,4 @@
-// import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-// import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/view_models/services/splash_services.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,6 +10,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final SplashServices _splashServices = SplashServices();
+
   @override
   void initState() {
     super.initState();
@@ -60,8 +58,23 @@ class _SplashScreenState extends State<SplashScreen> {
     //   ),
     // );
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(), // Show a loading indicator
+      body: Column(
+        children: [
+          Center(
+            child: Image.asset(
+              'assets/images/splashscreen.jpg',
+              fit: BoxFit.cover,
+              // height: MediaQuery.of(context).size.height*0.4,
+              //   width:  MediaQuery.of(context).size.width*0.4
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: CircularProgressIndicator(), // Show a loading indicator
+          ),
+        ],
       ),
     );
   }
