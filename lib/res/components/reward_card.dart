@@ -172,24 +172,55 @@ class RewardCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Column(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
+                      //issue date
                       children: [
-                        Text(
-                          'Expiry date',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeSubtitle,
-                          ),
+                        checkWalletCard
+                            ? Container()
+                            : Column(
+                                children: [
+                                  Text(
+                                    'Issue date',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: fontSizeSubtitle,
+                                    ),
+                                  ),
+                                  Text(
+                                    // DateFormat.yMMMd().format(reward.expiryDate),
+                                    DateFormat.yMMMd().format(reward.validity),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: fontSizeIdentifier,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                        SizedBox(
+                          width: 10,
                         ),
-                        Text(
-                          // DateFormat.yMMMd().format(reward.expiryDate),
-                          DateFormat.yMMMd().format(reward.validity),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeIdentifier,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        //expiry date
+                        Column(
+                          children: [
+                            Text(
+                              'Expiry date',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: fontSizeSubtitle,
+                              ),
+                            ),
+                            Text(
+                              // DateFormat.yMMMd().format(reward.expiryDate),
+                              DateFormat.yMMMd().format(reward.validity),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: fontSizeIdentifier,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
