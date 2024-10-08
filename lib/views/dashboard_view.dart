@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
               if (rewards.isEmpty) {
                 return const Center(child: Text("No rewards available"));
               }
-              print("data is : ${rewards[0].title}");
               return ListView.builder(
                 itemCount: rewards.length,
                 itemBuilder: (context, index) {
@@ -45,8 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       RewardCard(
                         reward: rewards[index],
-                        img: 'assets/images/coffee.jpg',
-                        color: Colors.red[900] ?? Colors.red,
                       ),
                       SizedBox(height: 20),
                     ],

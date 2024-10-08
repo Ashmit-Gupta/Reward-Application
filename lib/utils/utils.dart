@@ -1,12 +1,13 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-
 import '../res/app_color.dart';
+import 'dart:math' as math;
 
-class Utils{
-  static void fieldFocusChange(BuildContext context , FocusNode currentFocus , FocusNode nextFocus){
+class Utils {
+  static void fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
@@ -33,6 +34,7 @@ class Utils{
       )..show(context),
     );
   }
+
   static void flushBarSuccessfullMessage(String message, BuildContext context) {
     showFlushbar(
       context: context,
@@ -53,6 +55,29 @@ class Utils{
           color: AppColors.whiteColor,
         ),
       )..show(context),
+    );
+  }
+
+  static void dialogBox(BuildContext context, VoidCallback onPressOk,
+      VoidCallback onPressCancel, String title, String desc) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      animType: AnimType.rightSlide,
+      title: title,
+      desc: desc,
+      btnCancelOnPress: onPressCancel,
+      btnOkOnPress: onPressOk,
+    ).show();
+  }
+
+  static Color getRandomColor() {
+    final random = math.Random();
+    return Color.fromRGBO(
+      random.nextInt(150), // Red
+      random.nextInt(150), // Green
+      random.nextInt(150), // Blue
+      1, // Opacity (1 = fully opaque)
     );
   }
 }

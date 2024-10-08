@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/res/app_color.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
+import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
 
 class SideBar extends StatelessWidget {
@@ -44,7 +45,9 @@ class SideBar extends StatelessWidget {
                 leading: Icon(Icons.dashboard_customize_outlined),
                 title: Text("DashBoard"),
                 onTap: () {
-                  Navigator.pushNamed(context, RoutesName.home);
+                  Utils.dialogBox(context, () {
+                    Navigator.pushNamed(context, RoutesName.home);
+                  }, () {}, "LogOut", "Are you sure you want to Logout ?");
                 },
               ),
               ListTile(
@@ -59,7 +62,7 @@ class SideBar extends StatelessWidget {
                 leading: Icon(Icons.wallet),
                 title: Text("wallet"),
                 onTap: () async {
-                  Navigator.pushReplacementNamed(context, RoutesName.login);
+                  Navigator.pushReplacementNamed(context, RoutesName.wallet);
                 },
               ),
             ],

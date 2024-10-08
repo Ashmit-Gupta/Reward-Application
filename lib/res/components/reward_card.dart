@@ -1,25 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/res/app_color.dart';
 import 'package:intl/intl.dart';
+import 'package:reward_app/utils/utils.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
-  final String img;
-  final Color color;
 
-  const RewardCard(
-      {super.key,
-      required this.reward,
-      required this.img,
-      required this.color});
+  const RewardCard({super.key, required this.reward});
 
   @override
   Widget build(BuildContext context) {
     // Get the screen width and height for responsive design
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final Color color = Utils.getRandomColor();
 
     // Dynamic padding and font sizes based on screen width
     double padding = screenWidth * 0.04;
@@ -46,7 +41,7 @@ class RewardCard extends StatelessWidget {
               child: Opacity(
                 opacity: 0.2,
                 child: Image.asset(
-                  img,
+                  reward.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),

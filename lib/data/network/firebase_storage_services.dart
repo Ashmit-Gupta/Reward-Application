@@ -18,7 +18,6 @@ class FirebaseStorageServices extends BaseFirebaseStorageService {
       final rewards = snapshot.docs
           .map((doc) => Reward.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
-      print('the reward data is : ${rewards[0].description}');
 
       return Resource.completed(rewards);
     } catch (e) {
@@ -32,11 +31,11 @@ class FirebaseStorageServices extends BaseFirebaseStorageService {
     try {
       final snapshot = await _firestore.collection('rewards').get();
 
-      final allRewards = snapshot.docs
-          .map((doc) => Reward.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
-      print('the reward data is : ${allRewards[0].description}');
-
+      final allRewards = snapshot.docs.map((doc) {
+        print(
+            'Reward data: ${doc.data()}'); // Debug: Print the raw Firestore data
+        return Reward.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
       return Resource.completed(allRewards);
     } catch (e) {
       print("error while getting all rewards : $e");

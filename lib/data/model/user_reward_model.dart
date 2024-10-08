@@ -26,11 +26,11 @@ class Reward {
   factory Reward.fromMap(Map<String, dynamic> data) {
     return Reward(
       title: data['title'] ?? '',
-      points: data['points'] ?? '',
+      points: data['points'] ?? '0',
       identifier: data['identifier'] ?? '',
       description: data['description'] ?? '',
       subtitle: data['subtitle'] ?? '',
-      validity: (data['expiryDate'] as Timestamp).toDate(),
+      validity: (data['validity'] as Timestamp).toDate(),
       imageUrl: data['imageUrl'] ?? 'assets/images/reward.jpg',
       available: data['available'] ?? false,
     );

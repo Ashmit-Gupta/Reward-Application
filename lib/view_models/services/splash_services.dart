@@ -24,8 +24,8 @@ class SplashServices {
   Future<void> fetchRewards(BuildContext context, String userId) async {
     try {
       Provider.of<RewardViewModel>(context, listen: false).fetchRewards(userId);
-      //
-      Provider.of<WalletViewModel>(context, listen: false).allRewards;
+      print("fetching all the rewards for wallet ");
+      Provider.of<WalletViewModel>(context, listen: false).fetchAllRewards();
     } catch (e) {
       print("error while loading the data from firestore $e");
     }
