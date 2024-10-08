@@ -1,16 +1,15 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reward_app/view_models/theme_view_model.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeViweModel = Provider.of<ThemeViewModel>(context);
     return AppBar(
-      // leading: IconButton(
-      //   onPressed: () {},
-      //   icon: Icon(Icons.menu),
-      // ),
       title: Row(
         children: [
           Icon(
@@ -55,8 +54,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 endIndent: 10,
               ),
               IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.sunny),
+                onPressed: () {
+                  themeViweModel.toggleTheme();
+                },
+                icon: Icon(themeViweModel.isDarkMode
+                    ? Icons.nightlight_round
+                    : Icons.wb_sunny),
               )
             ],
           ),
