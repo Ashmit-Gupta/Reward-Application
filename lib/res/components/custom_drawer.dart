@@ -45,17 +45,17 @@ class SideBar extends StatelessWidget {
                 leading: Icon(Icons.dashboard_customize_outlined),
                 title: Text("DashBoard"),
                 onTap: () {
-                  Utils.dialogBox(context, () {
-                    Navigator.pushNamed(context, RoutesName.home);
-                  }, () {}, "LogOut", "Are you sure you want to Logout ?");
+                  Navigator.pushNamed(context, RoutesName.home);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),
                 onTap: () async {
-                  await authViewModel.logOut();
-                  Navigator.pushReplacementNamed(context, RoutesName.login);
+                  Utils.dialogBox(context, () {}, () async {
+                    await authViewModel.logOut();
+                    Navigator.pushReplacementNamed(context, RoutesName.login);
+                  }, "LogOut", "Are you sure you want to Logout ?");
                 },
               ),
               ListTile(

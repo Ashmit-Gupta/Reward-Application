@@ -27,11 +27,11 @@ class Reward {
     return Reward(
       title: data['title'] ?? '',
       points: data['points'] ?? '0',
-      identifier: data['identifier'] ?? '',
+      identifier: data['identifier'] ?? 'xxx-xxx-xxx-xxx',
       description: data['description'] ?? '',
       subtitle: data['subtitle'] ?? '',
       validity: (data['validity'] as Timestamp).toDate(),
-      imageUrl: data['imageUrl'] ?? 'assets/images/reward.jpg',
+      imageUrl: data['imageUrl'] ?? 'assets/images/fall_back_img.jpg',
       available: data['available'] ?? false,
     );
   }

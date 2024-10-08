@@ -23,7 +23,8 @@ class SplashServices {
 
   Future<void> fetchRewards(BuildContext context, String userId) async {
     try {
-      Provider.of<RewardViewModel>(context, listen: false).fetchRewards(userId);
+      Provider.of<RewardViewModel>(context, listen: false)
+          .fetchUserRewards(userId);
       print("fetching all the rewards for wallet ");
       Provider.of<WalletViewModel>(context, listen: false).fetchAllRewards();
     } catch (e) {

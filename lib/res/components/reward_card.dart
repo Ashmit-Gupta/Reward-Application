@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/res/app_color.dart';
 import 'package:intl/intl.dart';
-import 'package:reward_app/utils/utils.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
-
-  const RewardCard({super.key, required this.reward});
+  final bool checkWalletCard;
+  final Color color;
+  const RewardCard({
+    super.key,
+    required this.reward,
+    required this.checkWalletCard, //i am reusing this widget to display the cards in both the wallet from where the user can buy the cards and on the dashboard so thats why some texts needs to be changed !!
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     // Get the screen width and height for responsive design
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final Color color = Utils.getRandomColor();
 
     // Dynamic padding and font sizes based on screen width
     double padding = screenWidth * 0.04;
@@ -43,6 +47,9 @@ class RewardCard extends StatelessWidget {
                 child: Image.asset(
                   reward.imageUrl,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset('assets/images/fall_back_img.jpg');
+                  },
                 ),
               ),
             ),
@@ -70,14 +77,16 @@ class RewardCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Balance',
+                          checkWalletCard ? 'Amount' : 'Balance',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: fontSizeSubtitle,
                           ),
                         ),
                         Text(
-                          reward.points,
+                          checkWalletCard
+                              ? '\$${reward.points}'
+                              : reward.points,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: fontSizeSubtitle * 0.9,

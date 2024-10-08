@@ -44,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       RewardCard(
                         reward: rewards[index],
+                        checkWalletCard: false,
+                        color: Utils.getRandomColor(),
                       ),
                       SizedBox(height: 20),
                     ],

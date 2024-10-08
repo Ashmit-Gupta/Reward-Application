@@ -7,39 +7,68 @@ class FirebaseStorageServices extends BaseFirebaseStorageService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<Resource<List<Reward>>> getUserRewards(String userId) async {
+  Stream<Resource<List<Reward>>> getUserRewards(String userId) {
+    // try {
+    //   final snapshot = await _firestore
+    //       .collection('users')
+    //       .doc(userId)
+    //       .collection('rewards')
+    //       .get();
+    //
+    //   final rewards = snapshot.docs
+    //       .map((doc) => Reward.fromMap(doc.data() as Map<String, dynamic>))
+    //       .toList();
+    //
+    //   return Resource.completed(rewards);
+    // } catch (e) {
+    //   print("error from firestore cloud $e");
+    //   return Resource.error("Failed to load rewards: $e");
+    // }
+
     try {
-      final snapshot = await _firestore
+      return _firestore
           .collection('users')
           .doc(userId)
           .collection('rewards')
-          .get();
-
-      final rewards = snapshot.docs
-          .map((doc) => Reward.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
-
-      return Resource.completed(rewards);
+          .snapshots()
+          .map((snapshot) {
+        final rewards = snapshot.docs.map((doc) {
+          return Reward.fromMap(doc.data() as Map<String, dynamic>);
+        }).toList();
+        return Resource.completed(rewards);
+      });
     } catch (e) {
-      print("error from firestore cloud $e");
-      return Resource.error("Failed to load rewards: $e");
+      print("Error fetching user Rewards from storage service: $e");
+      return Stream.value(Resource.error("Failed to load rewards : $e"));
     }
   }
 
   @override
-  Future<Resource<List<Reward>>> getAllRewards() async {
-    try {
-      final snapshot = await _firestore.collection('rewards').get();
+  Stream<Resource<List<Reward>>> getAllRewards() {
+    // try {
+    //   final snapshot = await _firestore.collection('rewards').get();
+    //
+    //   final allRewards = snapshot.docs.map((doc) {
+    //     print(
+    //         'Reward data: ${doc.data()}'); // Debug: Print the raw Firestore data
+    //     return Reward.fromMap(doc.data() as Map<String, dynamic>);
+    //   }).toList();
+    //   return Resource.completed(allRewards);
+    // } catch (e) {
+    //   print("error while getting all rewards : $e");
+    //   return Resource.error("error !! $e");
+    // }
 
-      final allRewards = snapshot.docs.map((doc) {
-        print(
-            'Reward data: ${doc.data()}'); // Debug: Print the raw Firestore data
-        return Reward.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-      return Resource.completed(allRewards);
+    try {
+      return _firestore.collection('rewards').snapshots().map((snapshot) {
+        final allRewards = snapshot.docs.map((doc) {
+          return Reward.fromMap(doc.data() as Map<String, dynamic>);
+        }).toList();
+        return Resource.completed(allRewards);
+      });
     } catch (e) {
-      print("error while getting all rewards : $e");
-      return Resource.error("error !! $e");
+      print("Error fetching all rewards stream: $e");
+      return Stream.value(Resource.error("error !! $e"));
     }
   }
 }

@@ -13,17 +13,22 @@ class RewardViewModel extends ChangeNotifier {
   Resource<List<Reward>> _rewards = Resource(status: Status.IDLE);
   Resource<List<Reward>> get rewards => _rewards;
 
-  Future<void> fetchRewards(String userId) async {
-    try {
-      _rewards = Resource.loading();
-      notifyListeners();
-      // final response = await _firebaseStorageService.getUserRewards(userId);
-      final response = await _firebaseStorageRepo.getUserRewards("userID1");
+  void fetchUserRewards(String userId) async {
+    // try {
+    //   _rewards = Resource.loading();
+    //   notifyListeners();
+    //   // final response = await _firebaseStorageService.getUserRewards(userId);
+    //   final response = await _firebaseStorageRepo.getUserRewards("userID1");
+    //   _rewards = response;
+    // } catch (e) {
+    //   _rewards = Resource.error("Failed to fetch rewards");
+    // } finally {
+    //   notifyListeners();
+    // }
+
+    _firebaseStorageRepo.getUserRewards("userID1").listen((response) {
       _rewards = response;
-    } catch (e) {
-      _rewards = Resource.error("Failed to fetch rewards");
-    } finally {
       notifyListeners();
-    }
+    });
   }
 }
