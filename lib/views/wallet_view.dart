@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reward_app/data/response/status.dart';
 import 'package:reward_app/res/components/custom_app_bar.dart';
 import 'package:reward_app/res/components/custom_drawer.dart';
+import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 
 import '../res/components/reward_card.dart';
@@ -33,7 +34,11 @@ class WalletScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                RewardCard(reward: rewards[index]),
+                RewardCard(
+                  reward: rewards[index],
+                  checkWalletCard: true,
+                  color: Utils.getRandomColor(),
+                ),
                 SizedBox(
                   height: 20,
                 ),

@@ -12,18 +12,25 @@ class WalletViewModel extends ChangeNotifier {
   Resource<List<Reward>> _allRewards = Resource(status: Status.IDLE);
   Resource<List<Reward>> get allRewards => _allRewards;
 
-  Future<void> fetchAllRewards() async {
-    try {
-      _allRewards = Resource.loading();
-      notifyListeners();
+  // Future<void> fetchAllRewards() async {
+  //   try {
+  //     _allRewards = Resource.loading();
+  //     notifyListeners();
+  //
+  //     final response = await _firebaseStorageRepo.getAllRewards();
+  //     _allRewards = response;
+  //     print("the data from wallet vm is : ${_allRewards.data?[0].description}");
+  //   } catch (e) {
+  //     _allRewards = Resource.error("Failed to fetch rewards");
+  //   } finally {
+  //     notifyListeners();
+  //   }
+  // }
 
-      final response = await _firebaseStorageRepo.getAllRewards();
+  void fetchAllRewards() {
+    _firebaseStorageRepo.getAllRewards().listen((response) {
       _allRewards = response;
-      print("the data from wallet vm is : ${_allRewards.data?[0].description}");
-    } catch (e) {
-      _allRewards = Resource.error("Failed to fetch rewards");
-    } finally {
       notifyListeners();
-    }
+    });
   }
 }
