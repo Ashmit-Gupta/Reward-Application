@@ -10,6 +10,7 @@ import 'package:reward_app/utils/routes/routes.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
 import 'package:reward_app/view_models/reward_view_model.dart';
+import 'package:reward_app/view_models/theme_view_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 import 'data/network/firebase_services.dart';
 
@@ -17,7 +18,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // await configureDependencies();
-  runApp(MyApp());
+
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeViewModel(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,9 +43,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (_) => WalletViewModel(firebaseStorageRepo)),
       ],
-      child: MaterialApp(
-        initialRoute: RoutesName.splashScreen,
-        onGenerateRoute: Routes.generateRoute,
+      child: Consumer<ThemeViewModel>(
+        builder: (BuildContext context, ThemeViewModel value, Widget? child) {
+          return MaterialApp(
+            theme: value.themeData,
+            initialRoute: RoutesName.splashScreen,
+            onGenerateRoute: Routes.generateRoute,
+          );
+        },
       ),
     );
   }
