@@ -67,10 +67,10 @@ class SideBar extends StatelessWidget {
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),
                 onTap: () async {
-                  Utils.dialogBox(context, () {}, () async {
-                    await authViewModel.logOut();
+                  Utils.dialogBox(context, () async {
                     Navigator.pushReplacementNamed(context, RoutesName.login);
-                  }, "LogOut", "Are you sure you want to Logout ?");
+                    await authViewModel.logOut();
+                  }, () {}, "LogOut", "Are you sure you want to Logout ?");
                 },
               ),
             ],
