@@ -22,4 +22,8 @@ class FirebaseStorageRepo {
   Stream<Resource<List<Reward>>> getAllRewards() {
     return _firebaseStorageServices.getAllRewards();
   }
+
+  Future<Resource<void>> addData(Reward reward) async {
+    return await _firebaseStorageServices.addCard(reward);
+  }
 }

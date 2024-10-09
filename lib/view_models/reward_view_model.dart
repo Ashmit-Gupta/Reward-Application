@@ -26,7 +26,7 @@ class RewardViewModel extends ChangeNotifier {
     //   notifyListeners();
     // }
 
-    _firebaseStorageRepo.getUserRewards("userID1").listen((response) {
+    _firebaseStorageRepo.getUserRewards(userId).listen((response) {
       _rewards = response;
       notifyListeners();
     });

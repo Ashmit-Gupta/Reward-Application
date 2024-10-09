@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:reward_app/data/model/payment_model.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/res/app_color.dart';
-import 'package:intl/intl.dart';
+import '../../utils/routes/routes_name.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
@@ -26,210 +28,225 @@ class RewardCard extends StatelessWidget {
     double fontSizeSubtitle = screenWidth * 0.040;
     double fontSizeIdentifier = screenWidth * 0.04;
     double qrCodeSize = screenWidth * 0.28;
-
-    return Card(
-      shadowColor: AppColors.blackColor,
-      elevation: 16,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      color: color,
-      child: Stack(
-        children: [
-          // Background image with rounded corners, inside a Stack
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: SizedBox(
-              width: double.infinity, // Ensure it fills the card width
-              height: screenHeight * 0.38, // Give it a fixed height
-              child: Opacity(
-                opacity: 0.2,
-                child: Image.asset(
-                  reward.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset('assets/images/fall_back_img.jpg');
-                  },
+    return InkWell(
+      onTap: () {
+        PaymentModel paymentModel = PaymentModel(
+          amount: reward.points,
+          currency: 'INR',
+          description: reward.title,
+        );
+        Navigator.pushNamed(context, RoutesName.payment, arguments: {
+          'paymentModel': paymentModel,
+          'reward': reward,
+        });
+      },
+      child: Card(
+        shadowColor: AppColors.blackColor,
+        elevation: 16,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: color,
+        child: Stack(
+          children: [
+            // Background image with rounded corners, inside a Stack
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                width: double.infinity, // Ensure it fills the card width
+                height: screenHeight * 0.38, // Give it a fixed height
+                child: Opacity(
+                  opacity: 0.2,
+                  child: Image.asset(
+                    reward.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/images/fall_back_img.jpg');
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          // Content of the card (Text, QR code, etc.)
-          Padding(
-            padding: EdgeInsets.all(padding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title and Balance Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      reward.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: fontSizeTitle,
-                        fontWeight: FontWeight.bold,
+            // Content of the card (Text, QR code, etc.)
+            Padding(
+              padding: EdgeInsets.all(padding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title and Balance Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        reward.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: fontSizeTitle,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          checkWalletCard ? 'Amount' : 'Balance',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeSubtitle,
-                          ),
-                        ),
-                        Text(
-                          checkWalletCard
-                              ? '\$${reward.points}'
-                              : reward.points,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeSubtitle * 0.9,
-                            // decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.02),
-
-                // Subtitle, description, and QR code Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            reward.subtitle,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: fontSizeTitle * 1.1, // Slightly larger
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: screenHeight * 0.01),
-                          Text(
-                            reward.description,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
+                            checkWalletCard ? 'Amount' : 'Balance',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: fontSizeSubtitle,
                             ),
                           ),
+                          Text(
+                            checkWalletCard
+                                ? '\$${reward.points}'
+                                : '${reward.points}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: fontSizeSubtitle * 0.9,
+                              // decoration: TextDecoration.underline,
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                    // QR Code (dynamically sized)
-                    Container(
-                      width: qrCodeSize,
-                      height: qrCodeSize,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        Icons.qr_code,
-                        size: qrCodeSize * 0.85,
-                        color: color,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.03),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
 
-                // Identifier and Expiry Date Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Identifier',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeSubtitle,
-                          ),
-                        ),
-                        Text(
-                          reward.identifier,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: fontSizeIdentifier,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      //issue date
-                      children: [
-                        checkWalletCard
-                            ? Container()
-                            : Column(
-                                children: [
-                                  Text(
-                                    'Issue date',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: fontSizeSubtitle,
-                                    ),
-                                  ),
-                                  Text(
-                                    // DateFormat.yMMMd().format(reward.expiryDate),
-                                    DateFormat.yMMMd().format(reward.validity),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: fontSizeIdentifier,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        //expiry date
-                        Column(
+                  // Subtitle, description, and QR code Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Expiry date',
+                              reward.subtitle,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    fontSizeTitle * 1.1, // Slightly larger
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: screenHeight * 0.01),
+                            Text(
+                              reward.description,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: fontSizeSubtitle,
                               ),
                             ),
-                            Text(
-                              // DateFormat.yMMMd().format(reward.expiryDate),
-                              DateFormat.yMMMd().format(reward.validity),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: fontSizeIdentifier,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                      ),
+                      // QR Code (dynamically sized)
+                      Container(
+                        width: qrCodeSize,
+                        height: qrCodeSize,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.qr_code,
+                          size: qrCodeSize * 0.85,
+                          color: color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.03),
+
+                  // Identifier and Expiry Date Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Identifier',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: fontSizeSubtitle,
+                            ),
+                          ),
+                          Text(
+                            checkWalletCard
+                                ? 'xxx-xxx-xxx-xxx'
+                                : reward.identifier,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: fontSizeIdentifier,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        //issue date
+                        children: [
+                          checkWalletCard
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Text(
+                                      'Issue date',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: fontSizeSubtitle,
+                                      ),
+                                    ),
+                                    Text(
+                                      DateFormat.yMMMd()
+                                          .format(reward.validity),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: fontSizeIdentifier,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          //expiry date
+                          Column(
+                            children: [
+                              Text(
+                                'Expiry date',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: fontSizeSubtitle,
+                                ),
+                              ),
+                              Text(
+                                // DateFormat.yMMMd().format(reward.expiryDate),
+                                DateFormat.yMMMd().format(reward.validity),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: fontSizeIdentifier,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

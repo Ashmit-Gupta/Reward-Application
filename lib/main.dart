@@ -9,6 +9,7 @@ import 'package:reward_app/repository/firebase_storage_repo.dart';
 import 'package:reward_app/utils/routes/routes.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
+import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/view_models/reward_view_model.dart';
 import 'package:reward_app/view_models/theme_view_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
@@ -42,6 +43,8 @@ class MyApp extends StatelessWidget {
             create: (_) => RewardViewModel(firebaseStorageRepo)),
         ChangeNotifierProvider(
             create: (_) => WalletViewModel(firebaseStorageRepo)),
+        ChangeNotifierProvider(
+            create: (_) => PaymentViewModel(firebaseStorageRepo)),
       ],
       child: Consumer<ThemeViewModel>(
         builder: (BuildContext context, ThemeViewModel value, Widget? child) {
