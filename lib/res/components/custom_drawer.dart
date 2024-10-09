@@ -4,14 +4,15 @@ import 'package:reward_app/res/app_color.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
+import 'package:reward_app/view_models/sidebar_navigation_view_model.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthViewModel>(
-      builder: (context, authViewModel, Widget? child) {
+    return Consumer2<AuthViewModel, SideBarNavigationViewModel>(
+      builder: (context, authViewModel, navigationViewModel, Widget? child) {
         return Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -44,10 +45,24 @@ class SideBar extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.dashboard_customize_outlined),
                 title: Text("DashBoard"),
+                selected: navigationViewModel.selectedIndex == 0,
+                selectedTileColor: Colors.grey[350],
                 onTap: () {
+                  navigationViewModel.setSelectedIndex(0);
                   Navigator.pushNamed(context, RoutesName.home);
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.wallet),
+                title: Text("wallet"),
+                selected: navigationViewModel.selectedIndex == 1,
+                selectedTileColor: Colors.grey[350],
+                onTap: () async {
+                  navigationViewModel.setSelectedIndex(1);
+                  Navigator.pushReplacementNamed(context, RoutesName.wallet);
+                },
+              ),
+              Divider(),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),
@@ -56,13 +71,6 @@ class SideBar extends StatelessWidget {
                     await authViewModel.logOut();
                     Navigator.pushReplacementNamed(context, RoutesName.login);
                   }, "LogOut", "Are you sure you want to Logout ?");
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.wallet),
-                title: Text("wallet"),
-                onTap: () async {
-                  Navigator.pushReplacementNamed(context, RoutesName.wallet);
                 },
               ),
             ],

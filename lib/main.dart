@@ -11,6 +11,7 @@ import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
 import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/view_models/reward_view_model.dart';
+import 'package:reward_app/view_models/sidebar_navigation_view_model.dart';
 import 'package:reward_app/view_models/theme_view_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 import 'data/network/firebase_services.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => SideBarNavigationViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel(authRepository)),
         ChangeNotifierProvider(
             create: (_) => RewardViewModel(firebaseStorageRepo)),
