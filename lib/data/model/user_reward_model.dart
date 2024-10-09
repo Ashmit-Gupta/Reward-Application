@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Reward {
   final String title;
-  final String points;
+  final int points;
   final String description;
   final String identifier;
   final String imageUrl;
   final String subtitle;
   final DateTime validity;
   final bool available;
-  // final Color color;
 
   Reward({
     required this.title,
@@ -26,7 +25,7 @@ class Reward {
   factory Reward.fromMap(Map<String, dynamic> data) {
     return Reward(
       title: data['title'] ?? '',
-      points: data['points'] ?? '0',
+      points: data['points'] ?? 0,
       identifier: data['identifier'] ?? 'xxx-xxx-xxx-xxx',
       description: data['description'] ?? '',
       subtitle: data['subtitle'] ?? '',
@@ -34,5 +33,18 @@ class Reward {
       imageUrl: data['imageUrl'] ?? 'assets/images/fall_back_img.jpg',
       available: data['available'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'points': points,
+      'identifier': identifier,
+      'description': description,
+      'subtitle': subtitle,
+      'imageUrl': imageUrl,
+      'validity': Timestamp.fromDate(validity),
+      'issueDate': Timestamp.now() // Firestore requires Timestamp
+    };
   }
 }

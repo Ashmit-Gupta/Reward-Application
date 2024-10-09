@@ -3,4 +3,5 @@ class AppConstants {
   static const String COLUMN_NOTE_SNO = "s_no";
   static const String COLUMN_NOTE_TITLE = "title";
   static const String COLUMN_NOTE_DESC = "desc";
+  static const String AppName = "Reward App";
 }
