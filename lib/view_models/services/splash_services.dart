@@ -8,7 +8,6 @@ import '../reward_view_model.dart';
 
 class SplashServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   Future<void> checkAuthentication(BuildContext context) async {
     Future.delayed(Duration(seconds: 3), () async {
       User? user = _auth.currentUser;
