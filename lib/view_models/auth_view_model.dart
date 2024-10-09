@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart';
 import 'package:reward_app/data/response/status.dart';
 import '../data/response/response.dart';
 import '../repository/auth_repo.dart';
 
-@injectable
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
 
