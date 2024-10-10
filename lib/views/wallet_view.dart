@@ -6,7 +6,9 @@ import 'package:reward_app/res/components/custom_drawer.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 
+import '../data/model/payment_model.dart';
 import '../res/components/reward_card.dart';
+import '../utils/routes/routes_name.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
@@ -38,6 +40,18 @@ class WalletScreen extends StatelessWidget {
                   reward: rewards[index],
                   checkWalletCard: true,
                   color: Utils.getRandomColor(),
+                  cardFun: () {
+                    PaymentModel paymentModel = PaymentModel(
+                      amount: rewards[index].points,
+                      currency: 'INR',
+                      description: rewards[index].title,
+                    );
+                    Navigator.pushNamed(context, RoutesName.payment,
+                        arguments: {
+                          'paymentModel': paymentModel,
+                          'reward': rewards[index],
+                        });
+                  },
                 ),
                 SizedBox(
                   height: 20,

@@ -9,11 +9,13 @@ class RewardCard extends StatelessWidget {
   final Reward reward;
   final bool checkWalletCard;
   final Color color;
+  final Function cardFun;
   const RewardCard({
     super.key,
     required this.reward,
     required this.checkWalletCard, //i am reusing this widget to display the cards in both the wallet from where the user can buy the cards and on the dashboard so thats why some texts needs to be changed !!
     required this.color,
+    required this.cardFun,
   });
 
   @override
@@ -30,15 +32,7 @@ class RewardCard extends StatelessWidget {
     double qrCodeSize = screenWidth * 0.28;
     return InkWell(
       onTap: () {
-        PaymentModel paymentModel = PaymentModel(
-          amount: reward.points,
-          currency: 'INR',
-          description: reward.title,
-        );
-        Navigator.pushNamed(context, RoutesName.payment, arguments: {
-          'paymentModel': paymentModel,
-          'reward': reward,
-        });
+        cardFun();
       },
       child: Card(
         shadowColor: AppColors.blackColor,

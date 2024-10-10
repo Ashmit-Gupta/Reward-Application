@@ -46,6 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         reward: rewards[index],
                         checkWalletCard: false,
                         color: Utils.getRandomColor(),
+                        cardFun: () {
+                          //todo add the qr page
+                          print("qr code generate karva diyo !!");
+                        },
                       ),
                       SizedBox(height: 20),
                     ],
