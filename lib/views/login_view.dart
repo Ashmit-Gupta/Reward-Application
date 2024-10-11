@@ -6,7 +6,7 @@ import '../res/components/rounded_button.dart';
 import '../utils/routes/routes_name.dart';
 import '../utils/utils.dart';
 import '../view_models/auth_view_model.dart';
-import '../view_models/reward_view_model.dart';
+import '../view_models/home_view_model.dart';
 import '../view_models/wallet_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           String? userId =
                               FirebaseAuth.instance.currentUser?.uid;
                           if (userId != null) {
-                            Provider.of<RewardViewModel>(context, listen: false)
+                            Provider.of<HomeViewModel>(context, listen: false)
                                 .fetchUserRewards(userId);
                             Provider.of<WalletViewModel>(context, listen: false)
                                 .fetchAllRewards();

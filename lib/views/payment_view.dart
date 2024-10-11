@@ -4,18 +4,27 @@ import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/data/model/payment_model.dart';
+import 'package:reward_app/view_models/wallet_view_model.dart';
 
 import '../data/response/status.dart';
 
 class PaymentPage extends StatelessWidget {
-  final PaymentModel paymentModel;
-  final Reward reward;
-  const PaymentPage(
-      {super.key, required this.paymentModel, required this.reward});
+  // final PaymentModel paymentModel;
+  // final Reward reward;
+  const PaymentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     PaymentViewModel paymentViewModel = Provider.of<PaymentViewModel>(context);
+    WalletViewModel walletViewModel = Provider.of<WalletViewModel>(context);
+    final selectedReward = walletViewModel.selectedReward;
+    if (selectedReward == null) {
+      return Center(child: Text('No reward selected'));
+    }
+    PaymentModel payment = PaymentModel(
+        amount: selectedReward.points,
+        currency: 'INR',
+        description: selectedReward.title);
 
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +109,8 @@ class PaymentPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Trigger payment initiation
-                  paymentViewModel.initiatePayment(paymentModel, reward);
+                  paymentViewModel.rewardBeingPurchased = selectedReward;
+                  paymentViewModel.initiatePayment(payment);
                 },
                 child: Text("Buy Now"),
                 style: ElevatedButton.styleFrom(

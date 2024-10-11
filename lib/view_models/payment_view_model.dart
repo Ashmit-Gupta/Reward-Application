@@ -15,7 +15,13 @@ class PaymentViewModel extends ChangeNotifier {
   final FirebaseStorageRepo _firebaseStorageRepo;
 
   Resource _paymentStatus = Resource(status: Status.IDLE);
+
   Resource get paymentStatus => _paymentStatus;
+
+  set rewardBeingPurchased(Reward value) {
+    _rewardBeingPurchased = value;
+  }
+
   Reward? _rewardBeingPurchased;
 
   PaymentViewModel(this._firebaseStorageRepo) {
@@ -31,7 +37,7 @@ class PaymentViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void initiatePayment(PaymentModel paymentModel, Reward reward) {
+  void initiatePayment(PaymentModel paymentModel) {
     _paymentStatus = Resource.loading();
     notifyListeners();
     var options = {
@@ -50,7 +56,8 @@ class PaymentViewModel extends ChangeNotifier {
 
     try {
       _razorpay.open(options);
-      _rewardBeingPurchased = reward;
+      // _rewardBeingPurchased = ;
+      // _rewardBeingPurchased = ;
     } catch (e) {
       _paymentStatus = Resource.error("error failed to pay : $e");
       notifyListeners();
@@ -59,7 +66,8 @@ class PaymentViewModel extends ChangeNotifier {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    _paymentStatus = Resource.completed(response.paymentId);
+    _paymentStatus = Resource.completed(response
+        .paymentId); //can be used to store the history of the transaction
     notifyListeners();
     try {
       await _firebaseStorageRepo.addData(_rewardBeingPurchased!);
@@ -78,3 +86,4 @@ class PaymentViewModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+//todo email and user ki details access viewmodel ??
