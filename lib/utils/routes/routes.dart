@@ -6,7 +6,8 @@ import 'package:reward_app/views/login_view.dart';
 import 'package:reward_app/views/payment_view.dart';
 
 import '../../data/model/user_reward_model.dart';
-import '../../views/dashboard_view.dart';
+import '../../views/home_view.dart';
+import '../../views/qr_generation_view.dart';
 import '../../views/signup_view.dart';
 import '../../views/splash_screen.dart';
 import '../../views/wallet_view.dart';
@@ -36,14 +37,13 @@ class Routes {
             builder: (BuildContext context) => WalletScreen());
 
       case RoutesName.payment:
-        // final PaymentModel paymentModel = settings.arguments as PaymentModel;
-        // final Reward reward = settings.arguments as Reward;
-        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-            builder: (BuildContext context) => PaymentPage(
-                  paymentModel: args['paymentModel'] as PaymentModel,
-                  reward: args['reward'] as Reward,
-                ));
+            builder: (BuildContext context) => PaymentPage());
+
+      case RoutesName.rewardQR:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => QrGenerationView());
+
       default:
         return MaterialPageRoute(
           builder: (_) {

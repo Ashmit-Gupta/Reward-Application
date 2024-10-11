@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reward_app/data/model/payment_model.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/res/app_color.dart';
-import '../../utils/routes/routes_name.dart';
+import 'package:reward_app/utils/utils.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
   final bool checkWalletCard;
-  final Color color;
   final Function cardFun;
+  // final Color color = Utils.getRandomColor(); // we can use the provider for that to handle the state for the color of the reward cards
+
   const RewardCard({
     super.key,
-    required this.reward,
-    required this.checkWalletCard, //i am reusing this widget to display the cards in both the wallet from where the user can buy the cards and on the dashboard so thats why some texts needs to be changed !!
-    required this.color,
+    required this.reward, // can be changed with viewmodel
+    required this.checkWalletCard, //i am reusing this widget to display the cards in both the wallet from where the user can buy the cards and on the dashboard so that's why some texts needs to be changed !!
+    // required this.color,
     required this.cardFun,
   });
 
@@ -23,6 +23,7 @@ class RewardCard extends StatelessWidget {
     // Get the screen width and height for responsive design
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final Color color = Utils.getRandomColor();
 
     // Dynamic padding and font sizes based on screen width
     double padding = screenWidth * 0.04;

@@ -5,4 +5,5 @@ class RoutesName {
   static const String splashScreen = "splash_screen";
   static const String wallet = "wallet_screen";
   static const String payment = "payment_screen";
+  static const String rewardQR = "reward_qr";
 }

@@ -192,3 +192,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+//todo jaab user signin kaar toh uska jo user data h usko fhiala do pure app mai using provider
