@@ -5,6 +5,7 @@ import 'package:reward_app/res/components/custom_app_bar.dart';
 import 'package:reward_app/res/components/custom_drawer.dart';
 import 'package:reward_app/res/components/reward_card.dart';
 import 'package:reward_app/res/components/reward_list_builder.dart';
+import 'package:reward_app/res/components/rules_conditions.dart';
 import 'package:reward_app/view_models/home_view_model.dart';
 
 import '../data/model/user_reward_model.dart';
@@ -34,11 +35,20 @@ class _QrGenerationViewState extends State<QrGenerationView> {
       body: Column(
         children: [
           RewardCard(
-              reward: currReward,
-              checkWalletCard: false,
-              cardFun: () {
-                print("in the qr code !!");
-              })
+            reward: currReward,
+            checkWalletCard: false,
+            cardFun: () {},
+            showQRCode: true,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'Rules and Conditions',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          buildRulesAndConditions(),
         ],
       ),
     );

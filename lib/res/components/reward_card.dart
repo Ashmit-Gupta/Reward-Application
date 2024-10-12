@@ -3,12 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
 import 'package:reward_app/res/app_color.dart';
 import 'package:reward_app/utils/utils.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
   final bool checkWalletCard;
   final Function cardFun;
-  // final Color color = Utils.getRandomColor(); // we can use the provider for that to handle the state for the color of the reward cards
+  // final Color color = Utils.getRandomColor(); // we can use the provider for that to handle the state for the color of the reward
+  final bool showQRCode;
 
   const RewardCard({
     super.key,
@@ -16,6 +18,7 @@ class RewardCard extends StatelessWidget {
     required this.checkWalletCard, //i am reusing this widget to display the cards in both the wallet from where the user can buy the cards and on the dashboard so that's why some texts needs to be changed !!
     // required this.color,
     required this.cardFun,
+    this.showQRCode = false,
   });
 
   @override
@@ -147,11 +150,19 @@ class RewardCard extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Icon(
-                          Icons.qr_code,
-                          size: qrCodeSize * 0.85,
-                          color: color,
-                        ),
+                        child: showQRCode
+                            ? QrImageView(
+                                data: reward.identifier,
+                                version: QrVersions.auto,
+                                size: qrCodeSize * 0.85,
+
+                                // backgroundColor: color,
+                              )
+                            : Icon(
+                                Icons.qr_code,
+                                size: qrCodeSize * 0.85,
+                                color: color,
+                              ),
                       ),
                     ],
                   ),

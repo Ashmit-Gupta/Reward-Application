@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/data/model/user_reward_model.dart';
+import 'package:reward_app/res/components/rules_conditions.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/data/model/payment_model.dart';
@@ -100,7 +101,7 @@ class PaymentPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
-            _buildRulesAndConditions(),
+            buildRulesAndConditions(),
 
             SizedBox(height: 20),
 
@@ -142,30 +143,6 @@ class PaymentPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildRulesAndConditions() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '• You receive 10 points with your first purchase.',
-          style: TextStyle(fontSize: 16),
-        ),
-        Text(
-          '• Points expire after 11 months.',
-          style: TextStyle(fontSize: 16),
-        ),
-        Text(
-          '• For each \$5 spent, you receive 250 points.',
-          style: TextStyle(fontSize: 16),
-        ),
-        Text(
-          '• Each purchase earns a minimum of 10 points and a maximum of 10,000 points.',
-          style: TextStyle(fontSize: 16),
-        ),
-      ],
     );
   }
 }
