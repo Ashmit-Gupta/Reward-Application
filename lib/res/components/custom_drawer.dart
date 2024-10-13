@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/res/app_color.dart';
@@ -5,29 +6,33 @@ import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
 import 'package:reward_app/view_models/sidebar_navigation_view_model.dart';
+import 'package:reward_app/view_models/user_view_model.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthViewModel, SideBarNavigationViewModel>(
-      builder: (context, authViewModel, navigationViewModel, Widget? child) {
+    return Consumer3<AuthViewModel, SideBarNavigationViewModel, UserViewModel>(
+      builder: (context, authViewModel, navigationViewModel, userViewModel,
+          Widget? child) {
         return Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text(authViewModel.user?.displayName ?? "Guest"),
-                accountEmail:
-                    Text(authViewModel.user?.email ?? "guest@gmail.com"),
+                accountName: Text(userViewModel.name ?? "Guest"),
+                accountEmail: Text(userViewModel.email ?? "guest@gmail.com"),
                 currentAccountPicture: CircleAvatar(
                   child: ClipOval(
-                    child: Image.network(
-                      authViewModel.user?.photoURL ??
-                          'https://www.reelo.io/_next/image?url=%2Fassets%2Fimages%2Fnew-home%2Fmore-features%2Ffeedback.webp&w=1920&q=100',
-                      width: 90,
+                    child: CachedNetworkImage(
+                      imageUrl: userViewModel.imageUrl ?? '',
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/user_logo.png'),
                       height: 90,
+                      width: 90,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -35,9 +40,8 @@ class SideBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.blueColor,
                   image: DecorationImage(
-                    image: NetworkImage(
-                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg',
-                    ),
+                    image: CachedNetworkImageProvider(
+                        'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -69,7 +73,7 @@ class SideBar extends StatelessWidget {
                 onTap: () async {
                   Utils.dialogBox(context, () async {
                     Navigator.pushReplacementNamed(context, RoutesName.login);
-                    await authViewModel.logOut();
+                    await authViewModel.logOut(context);
                   }, () {}, "LogOut", "Are you sure you want to Logout ?");
                 },
               ),

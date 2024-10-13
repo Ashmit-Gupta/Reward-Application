@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/data/response/status.dart';
+import 'package:reward_app/view_models/user_view_model.dart';
 import '../res/components/rounded_button.dart';
 import '../utils/routes/routes_name.dart';
 import '../utils/utils.dart';
@@ -38,8 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
+    // print("login_view at start: ${authViewModel.authResource.status}");
     // final height = MediaQuery.of(context).size.height;
-
+    // print(
+    //     "login_view : at the top the email controller value is : ${_emailController.text}");
+    // print("login_view : at the top the pwd controller value is : ${_pwdController.text}");
     return Scaffold(
       body: Stack(
         children: [
@@ -47,8 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/login_bg.jpg'), // Add your background image here
+                image: AssetImage('assets/images/login_bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -160,12 +162,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             "The Password must be greater than 6 characters!",
                             context);
                       } else {
-                        await authViewModel.login(
-                            _emailController.text, _pwdController.text);
+                        await authViewModel.login(_emailController.text,
+                            _pwdController.text, context);
                         if (authViewModel.authResource.status ==
                             Status.COMPLETED) {
                           String? userId =
-                              FirebaseAuth.instance.currentUser?.uid;
+                              Provider.of<UserViewModel>(context, listen: false)
+                                  .uId;
                           if (userId != null) {
                             Provider.of<HomeViewModel>(context, listen: false)
                                 .fetchUserRewards(userId);
@@ -173,6 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .fetchAllRewards();
                             Navigator.pushReplacementNamed(
                                 context, RoutesName.home);
+                            authViewModel.resetAuthResource();
+                            print(
+                                "login_view : ${authViewModel.authResource.status}");
                           } else {
                             Utils.flushBarErrorMessage(
                                 "Failed to retrieve user information", context);
