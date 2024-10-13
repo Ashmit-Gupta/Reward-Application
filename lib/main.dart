@@ -13,6 +13,7 @@ import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/view_models/home_view_model.dart';
 import 'package:reward_app/view_models/sidebar_navigation_view_model.dart';
 import 'package:reward_app/view_models/theme_view_model.dart';
+import 'package:reward_app/view_models/user_view_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 import 'data/network/firebase_services.dart';
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     FirebaseStorageRepo firebaseStorageRepo =
         FirebaseStorageRepo(firebaseStorageServices);
     AuthRepository authRepository = AuthRepository(firebaseServices);
+    UserViewModel userViewModel = UserViewModel();
 
     return MultiProvider(
       providers: [
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
             create: (_) => WalletViewModel(firebaseStorageRepo)),
         ChangeNotifierProvider(
             create: (_) => PaymentViewModel(firebaseStorageRepo)),
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: Consumer<ThemeViewModel>(
         builder: (BuildContext context, ThemeViewModel value, Widget? child) {

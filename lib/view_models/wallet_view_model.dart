@@ -15,6 +15,12 @@ class WalletViewModel extends ChangeNotifier {
   Resource<List<Reward>> _allRewards = Resource(status: Status.IDLE);
   Resource<List<Reward>> get allRewards => _allRewards;
 
+  @override
+  void dispose() {
+    clearWalletData();
+    super.dispose();
+  }
+
   void fetchAllRewards() async {
     _allRewards = Resource.loading();
     notifyListeners();
@@ -32,11 +38,17 @@ class WalletViewModel extends ChangeNotifier {
 
   void selectReward(Reward reward) {
     _selectedReward = reward;
-    // notifyListeners();
+    notifyListeners();
   }
 
   void clearSelectedReward() {
     _selectedReward = null; // Method to clear the selected reward if needed.
+    notifyListeners();
+  }
+
+  void clearWalletData() {
+    _selectedReward = null;
+    _allRewards = Resource(status: Status.IDLE); // Reset rewards list
     notifyListeners();
   }
 }

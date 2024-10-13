@@ -1,39 +1,38 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 // import 'package:injectable/injectable.dart';
 import 'package:reward_app/data/response/status.dart';
+import 'package:reward_app/view_models/user_view_model.dart';
+import 'package:reward_app/view_models/wallet_view_model.dart';
 import '../data/response/response.dart';
 import '../repository/auth_repo.dart';
+import 'home_view_model.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
 
-  AuthViewModel(this._authRepository) {
-    _checkCurrentUser(); // Check current user on initialization
-  }
-
-  User? _user;
-  User? get user => _user;
+  AuthViewModel(this._authRepository);
 
   Resource<User?> _authResource = Resource(status: Status.IDLE);
+
   Resource<User?> get authResource => _authResource;
+  //
+  // @override
+  // void dispose() {
+  //   resetAuthResource();
+  //   super.dispose();
+  // }
 
-  void _checkCurrentUser() {
-    _user = FirebaseAuth.instance.currentUser;
-    if (_user != null) {
-      _authResource = Resource.completed(_user); // User is logged in
-    } else {
-      _authResource = Resource.error("User is not logged in");
-    }
-    notifyListeners(); // Notify UI about the user state
-  }
-
-  Future<void> login(String email, String pwd) async {
+  Future<void> login(String email, String pwd, BuildContext context) async {
     _setAuthResource(Resource.loading());
     try {
+      print("auth view model : $email , $pwd");
       Resource<User?> result = await _authRepository.login(email, pwd);
       _setAuthResource(result);
-      if (result.status == Status.COMPLETED) _user = result.data;
+      Provider.of<UserViewModel>(context, listen: false).fetchUserData();
     } catch (e) {
       _setAuthResource(Resource.error(e.toString()));
     }
@@ -44,25 +43,22 @@ class AuthViewModel extends ChangeNotifier {
     try {
       Resource<User?> result = await _authRepository.signUp(email, pwd);
       _setAuthResource(result);
-      if (result.status == Status.COMPLETED) _user = result.data;
     } catch (e) {
       _setAuthResource(Resource.error(e.toString()));
     }
   }
 
-  Future<void> logOut() async {
+  Future<void> logOut(BuildContext context) async {
     _setAuthResource(Resource.loading());
     try {
-      Resource<void> result = await _authRepository.logOut();
-      if (result.status == Status.COMPLETED) {
-        _user = null; // Clear the user
-        _setAuthResource(Resource.completed(
-            null)); // Set authResource as completed with null user
-      } else {
-        _setAuthResource(
-            Resource.error(result.message ?? "Error during logout"));
-      }
+      await _authRepository.logOut();
+      _setAuthResource(Resource.completed(null));
+      resetAuthResource();
+      Provider.of<HomeViewModel>(context, listen: false).clearHomeData();
+      Provider.of<UserViewModel>(context, listen: false).clearUserData();
+      Provider.of<WalletViewModel>(context, listen: false).clearWalletData();
     } catch (e) {
+      print("The user logout has been failed !!");
       _setAuthResource(Resource.error(e.toString()));
     }
   }
@@ -72,8 +68,12 @@ class AuthViewModel extends ChangeNotifier {
     _authResource = resource;
     notifyListeners();
   }
-}
 
+  void resetAuthResource() {
+    _authResource = Resource(status: Status.IDLE);
+    notifyListeners();
+  }
+}
 //
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
