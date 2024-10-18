@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/data/response/status.dart';
-import 'package:reward_app/res/components/custom_app_bar.dart';
-import 'package:reward_app/res/components/custom_drawer.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/home_view_model.dart';
-import 'package:reward_app/res/components/reward_list_builder.dart';
+import 'package:reward_app/view_models/user_view_model.dart';
+
+import 'components/custom_app_bar.dart';
+import 'components/custom_drawer.dart';
+import 'components/reward_list_builder.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,12 +18,12 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: const SideBar(),
       appBar: const CustomAppBar(),
-      body: Consumer<HomeViewModel>(
-        builder: (context, homeViewModel, child) {
+      body: Consumer2<HomeViewModel, UserViewModel>(
+        builder: (context, homeViewModel, userViewModel, child) {
           switch (homeViewModel.rewards.status) {
+            //create a case for idle aagar idle h toh fetch data !
             case Status.LOADING:
               return const Center(child: CircularProgressIndicator());
-
             case Status.ERROR:
               Utils.flushBarErrorMessage(
                   "error ${homeViewModel.rewards.message}", context);

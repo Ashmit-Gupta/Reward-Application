@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reward_app/data/model/user_reward_model.dart';
-import 'package:reward_app/res/components/rules_conditions.dart';
-import 'package:reward_app/utils/utils.dart';
 import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/data/model/payment_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 
 import '../data/response/status.dart';
+import 'components/rules_conditions.dart';
 
 class PaymentPage extends StatelessWidget {
   // final PaymentModel paymentModel;

@@ -11,8 +11,8 @@ class AuthRepository {
     return await _firebaseServices.logIn(email, pwd);
   }
 
-  Future<Resource<User?>> signUp(String email, String pwd) async {
-    return await _firebaseServices.signUp(email, pwd);
+  Future<Resource<User?>> signUp(String email, String pwd , String name) async {
+    return await _firebaseServices.signUp(email, pwd, name);
   }
 
   Future<Resource<void>> logOut() async {

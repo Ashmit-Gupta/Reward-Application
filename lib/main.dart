@@ -9,9 +9,12 @@ import 'package:reward_app/repository/firebase_storage_repo.dart';
 import 'package:reward_app/utils/routes/routes.dart';
 import 'package:reward_app/utils/routes/routes_name.dart';
 import 'package:reward_app/view_models/auth_view_model.dart';
+import 'package:reward_app/view_models/login_view_model.dart';
+import 'package:reward_app/view_models/logout_view_model.dart';
 import 'package:reward_app/view_models/payment_view_model.dart';
 import 'package:reward_app/view_models/home_view_model.dart';
 import 'package:reward_app/view_models/sidebar_navigation_view_model.dart';
+import 'package:reward_app/view_models/signup_view_model.dart';
 import 'package:reward_app/view_models/theme_view_model.dart';
 import 'package:reward_app/view_models/user_view_model.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
@@ -38,19 +41,51 @@ class MyApp extends StatelessWidget {
         FirebaseStorageRepo(firebaseStorageServices);
     AuthRepository authRepository = AuthRepository(firebaseServices);
     UserViewModel userViewModel = UserViewModel();
-
+    HomeViewModel homeViewModel =
+        HomeViewModel(firebaseStorageRepo, userViewModel);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SideBarNavigationViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel(authRepository)),
         ChangeNotifierProvider(
-            create: (_) => HomeViewModel(firebaseStorageRepo)),
+            create: (_) => HomeViewModel(firebaseStorageRepo, userViewModel)),
         ChangeNotifierProvider(
             create: (_) => WalletViewModel(firebaseStorageRepo)),
         ChangeNotifierProvider(
             create: (_) => PaymentViewModel(firebaseStorageRepo)),
-        ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => userViewModel),
+        ChangeNotifierProvider(
+            create: (_) => LoginViewModel(authRepository, userViewModel)),
+        ChangeNotifierProvider(create: (_) => SignUpViewModel(authRepository)),
+        ChangeNotifierProvider(
+            create: (_) =>
+                LogOutViewModel(authRepository, userViewModel, homeViewModel)),
       ],
+      // providers: [
+      //   ChangeNotifierProvider(create: (_) => SideBarNavigationViewModel()),
+      //   ChangeNotifierProvider(
+      //       create: (context) => AuthViewModel(context.read<AuthRepository>())),
+      //   ChangeNotifierProvider(
+      //       create: (context) => HomeViewModel(
+      //           context.read<FirebaseStorageRepo>(),
+      //           context.read<UserViewModel>())),
+      //   ChangeNotifierProvider(
+      //       create: (context) =>
+      //           WalletViewModel(context.read<FirebaseStorageRepo>())),
+      //   ChangeNotifierProvider(
+      //       create: (context) =>
+      //           PaymentViewModel(context.read<FirebaseStorageRepo>())),
+      //   ChangeNotifierProvider(create: (_) => userViewModel),
+      //   ChangeNotifierProvider(
+      //       create: (context) => LoginViewModel(
+      //           context.read<AuthRepository>(), context.read<UserViewModel>())),
+      //   ChangeNotifierProvider(
+      //       create: (context) =>
+      //           SignUpViewModel(context.read<AuthRepository>())),
+      //   ChangeNotifierProvider(
+      //       create: (context) => LogOutViewModel(context.read<AuthRepository>(),
+      //           context.read<UserViewModel>(), context.read<HomeViewModel>())),
+      // ],
       child: Consumer<ThemeViewModel>(
         builder: (BuildContext context, ThemeViewModel value, Widget? child) {
           return MaterialApp(

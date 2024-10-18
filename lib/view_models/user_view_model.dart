@@ -1,42 +1,98 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reward_app/data/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserViewModel extends ChangeNotifier {
-  User? _currentUser;
-  String? _uId;
-  String? _email;
-  String? _name;
-  String? _contactNo;
-  String? _imageUrl;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  String? get uId => _uId;
+  bool _isLoggedIn = false;
 
-  String? get email => _email;
+  bool get isLoggedIn => _isLoggedIn;
 
-  String? get name => _name;
-  String? get contactNo => _contactNo;
-  String? get imageUrl => _imageUrl;
+  static Future<SharedPreferences> sharedPref() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp;
+  }
 
-  void fetchUserData() {
-    try {
-      _currentUser = FirebaseAuth.instance.currentUser;
-      if (_currentUser != null) {
-        _uId = _currentUser!.uid;
-        _email = _currentUser!.email;
-        _name = _currentUser!.displayName;
-        _imageUrl = _currentUser!.photoURL;
-      }
+  Future<bool> saveUser(UserData user) async {
+    final SharedPreferences sp = await sharedPref();
+    if (user.id.isNotEmpty) {
+      await sp.setString('id', user.id.toString());
+      await sp.setString('name', user.displayName.toString());
+      await sp.setString('email', user.email.toString());
+      await sp.setString('imageUrl', user.photoURL.toString());
       notifyListeners();
-    } catch (e) {
-      print("error while fetching the user data!! $e");
+      return true;
+    } else {
+      return false;
     }
   }
 
-  void clearUserData() {
-    _currentUser = null;
-    _uId = null;
-    _email = null;
-    _name = null;
+  Future<bool> fetchAndSaveUserData() async {
+    try {
+      User? firebaseUser = _auth.currentUser;
+      if (firebaseUser != null) {
+        UserData userData = UserData(
+            id: firebaseUser.uid,
+            email: firebaseUser.email ?? "guestUser@gmail.com",
+            displayName: firebaseUser.displayName ?? 'Guest User',
+            photoURL: firebaseUser.photoURL ?? '');
+
+        bool success = await saveUser(userData);
+        if (success) {
+          print('user data saved to sharedPreference');
+        } else {
+          print('failed to save user data to sharedPreference');
+        }
+        _setIsLoggedIn(true);
+        return success;
+      } else {
+        print('no user is signed in');
+        _setIsLoggedIn(false);
+        return false;
+      }
+    } catch (e) {
+      _setIsLoggedIn(false);
+      print("Error fetching user data from Firebase: $e");
+      return false;
+    }
+  }
+
+  Future<UserData> getUser() async {
+    final SharedPreferences sp = await sharedPref();
+    // final SharedPreferences sp = await SharedPreferences.getInstance();
+    final String id = sp.getString('id') ?? '';
+    final String name = sp.getString('name') ?? '';
+    final String email = sp.getString('email') ?? '';
+    final String imageUrl = sp.getString('imageUrl') ?? '';
+
+    if (id.isEmpty) {
+      return UserData(id: '', email: '', displayName: '', photoURL: '');
+    } else {
+      return UserData(
+          id: id, email: email, photoURL: imageUrl, displayName: name);
+    }
+  }
+
+  Future<bool> removeUser() async {
+    // final SharedPreferences sp = await SharedPreferences.getInstance();
+    final SharedPreferences sp = await sharedPref();
+    // Remove the token
+    bool isCleared = await sp.clear();
+    if (isCleared) {
+      await _auth.signOut();
+      _setIsLoggedIn(false);
+      print("User signed out and data cleared successfully.");
+      return true;
+    } else {
+      print("Failed to remove user data.");
+      return false;
+    }
+  }
+
+  void _setIsLoggedIn(bool state) {
+    _isLoggedIn = state;
     notifyListeners();
   }
 }
