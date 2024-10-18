@@ -48,7 +48,7 @@ class PaymentViewModel extends ChangeNotifier {
       'name': AppConstants.AppName,
       'description': paymentModel.description,
       'prefill': {
-        'contact': '1234567890',
+        'contact': '9513578246',
         'email': FirebaseAuth.instance.currentUser?.email ??
             "mainhibatarha@gmail.com",
       }

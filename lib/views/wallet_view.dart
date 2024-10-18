@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_app/data/response/status.dart';
-import 'package:reward_app/res/components/custom_app_bar.dart';
-import 'package:reward_app/res/components/custom_drawer.dart';
-import 'package:reward_app/res/components/reward_list_builder.dart';
 import 'package:reward_app/view_models/wallet_view_model.dart';
 import '../utils/routes/routes_name.dart';
+import 'components/custom_app_bar.dart';
+import 'components/custom_drawer.dart';
+import 'components/reward_list_builder.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});

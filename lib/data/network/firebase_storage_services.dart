@@ -27,6 +27,7 @@ class FirebaseStorageServices extends BaseFirebaseStorageService {
     // }
 
     try {
+      print("log(firebase storage services) the userId is   : $userId");
       return _firestore
           .collection('users')
           .doc(userId)
@@ -91,7 +92,7 @@ class FirebaseStorageServices extends BaseFirebaseStorageService {
       DocumentSnapshot userSnapShot = await userDoc.get();
 
       if (!userSnapShot.exists) {
-        await userDoc.set({'userId': userId});
+        await userDoc.set({'userId': userId, 'name': "name"});
         print('User document created for userID: $userId');
       }
       // Set the reward data under the user's document

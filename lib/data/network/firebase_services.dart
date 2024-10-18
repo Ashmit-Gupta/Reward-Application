@@ -92,11 +92,12 @@ class FirebaseServices extends BaseFirebaseServices {
   }
 
   @override
-  Future<Resource<User?>> signUp(String email, String pwd) async {
+  Future<Resource<User?>> signUp(String email, String pwd, String name) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: pwd);
       if (userCredential.user != null) {
+        userCredential.user?.updateDisplayName(name);
         return Resource.completed(userCredential.user);
       } else {
         String error =

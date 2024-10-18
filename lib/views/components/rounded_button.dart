@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../app_color.dart';
+
+import '../../res/app_color.dart';
 
 class RoundedButton extends StatelessWidget {
   final String title;
@@ -28,14 +29,15 @@ class RoundedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: loading
-              ? CircularProgressIndicator(
-                  color: AppColors.progressBarColor,
-                )
-              : Text(
-                  title,
-                  style: TextStyle(color: AppColors.whiteColor),
-                ),
+          child:
+              // loading
+              //     ? CircularProgressIndicator(
+              //         color: AppColors.progressBarColor,
+              //       )
+              Text(
+            title,
+            style: TextStyle(color: AppColors.whiteColor),
+          ),
         ),
       ),
     );
